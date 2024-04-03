@@ -1,0 +1,25 @@
+package com.matt.libraryapi.domain.enums;
+
+public enum BookGender {
+  ROMANCE,
+  SCIENCE_FICTION,
+  FANTASY,
+  MYSTERY,
+  SUSPENSE,
+  THRILLER,
+  HORROR,
+  ADVENTURE,
+  DETECTIVE,
+  DRAMA,
+  PHILOSOPHY,
+  BIOGRAPHY,
+  AUTOBIOGRAPHY,
+  HISTORY,
+  POLITICS,
+  SCIENCE,
+  TECHNOLOGY,
+  SELF_HELP,
+  GEOGRAPHY,
+  MATHEMATICS,
+  PSYCHOLOGY
+}
