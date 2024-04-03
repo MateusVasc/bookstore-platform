@@ -1,5 +1,6 @@
 package com.matt.libraryapi.domain.entity;
 
+import com.matt.libraryapi.domain.enums.UserGender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,8 +34,17 @@ public class User {
   @Column(length = 30, nullable = false)
   private String lastname;
 
+  @Column(length = 30, nullable = false)
+  private UserGender gender;
+
+  @Column(nullable = false)
+  private int age;
+
   @Column(length = 50, nullable = false, unique = true)
   private String email;
+
+  @Column(length = 15, nullable = false, unique = true)
+  private String cpf;
 
   @Column(length = 20, nullable = false)
   private String password;
@@ -47,4 +57,7 @@ public class User {
 
   @Column(nullable = false)
   private boolean isMissingReturnDate;
+
+  @Column(nullable = false)
+  private boolean isBlocked;
 }
