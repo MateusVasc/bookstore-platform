@@ -1,6 +1,7 @@
 package com.matt.libraryapi.domain.entity;
 
 import com.matt.libraryapi.domain.enums.UserGender;
+import com.matt.libraryapi.domain.request.CreateUserRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -60,4 +61,14 @@ public class User {
 
   @Column(nullable = false)
   private boolean isBlocked;
+
+  public User(CreateUserRequestDTO createUserRequestDTO) {
+    this.name = createUserRequestDTO.name();
+    this.lastname = createUserRequestDTO.lastname();
+    this.gender = createUserRequestDTO.gender();
+    this.age = createUserRequestDTO.age();
+    this.email = createUserRequestDTO.email();
+    this.cpf = createUserRequestDTO.cpf();
+    this.password = createUserRequestDTO.password();
+  }
 }
