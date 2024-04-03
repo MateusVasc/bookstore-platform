@@ -1,6 +1,6 @@
 package com.matt.libraryapi.domain.entity;
 
-import com.matt.libraryapi.domain.enums.Gender;
+import com.matt.libraryapi.domain.enums.BookGender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,8 +36,8 @@ public class Book {
   @Column(nullable = false)
   private String synopsis;
 
-  @Column(length = 20, nullable = false)
-  private Gender gender;
+  @Column(length = 30, nullable = false)
+  private BookGender gender;
 
   @Column(name = "publishing_company", length = 50, nullable = false)
   private String publishingCompany;

@@ -31,8 +31,8 @@ public class Admin {
   @Column(length = 30, nullable = false)
   private String lastname;
 
-  @Column(length = 30, nullable = false)
-  private String position;
+  @Column(length = 15, nullable = false, unique = true)
+  private String cpf;
 
   @Column(length = 50, nullable = false, unique = true)
   private String email;
