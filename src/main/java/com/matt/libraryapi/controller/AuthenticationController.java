@@ -1,4 +1,4 @@
-package com.matt.libraryapi.domain.controller;
+package com.matt.libraryapi.controller;
 
 import com.matt.libraryapi.domain.enums.Role;
 import com.matt.libraryapi.domain.request.LoginAuthenticationRequestDTO;
