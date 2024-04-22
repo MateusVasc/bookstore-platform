@@ -29,14 +29,21 @@ public class AuthenticationController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity login(@RequestBody @Valid LoginAuthenticationRequestDTO loginData) {
-    this.authenticationService.Login(loginData);
+  public ResponseEntity<Object> login(@RequestBody @Valid LoginAuthenticationRequestDTO loginData) {
+    ResponseEntity<Object> response;
 
-    return ResponseEntity.ok().build();
+    try {
+      response = ResponseEntity.ok(this.authenticationService.Login(loginData));
+
+    } catch (LibraryException exception) {
+      response = ResponseEntity.badRequest().body(new MessageUtil(exception.getMessage()));
+    }
+
+    return response;
   }
 
   @PostMapping("/register")
-  public ResponseEntity register(@RequestBody RegisterRequestDTO request)
+  public ResponseEntity<Object> register(@RequestBody RegisterRequestDTO request)
       throws LibraryException {
     ResponseEntity<Object> response;
 
@@ -47,9 +54,8 @@ public class AuthenticationController {
         response = ResponseEntity.badRequest().body(new MessageUtil(exception.getMessage()));
       }
     } else {
-      this.authenticationService.registerAdmin(request);
-
-      return ResponseEntity.ok().build();
+      response = ResponseEntity.badRequest()
+          .body(new MessageUtil("An admin has to be created by another admin"));
     }
 
     return response;
