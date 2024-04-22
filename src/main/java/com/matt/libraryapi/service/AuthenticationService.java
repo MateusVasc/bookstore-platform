@@ -4,7 +4,9 @@ import com.matt.libraryapi.domain.entity.Admin;
 import com.matt.libraryapi.domain.entity.User;
 import com.matt.libraryapi.domain.request.LoginAuthenticationRequestDTO;
 import com.matt.libraryapi.domain.request.RegisterRequestDTO;
+import com.matt.libraryapi.domain.response.LoginAuthenticationResponseDTO;
 import com.matt.libraryapi.domain.response.RegisterResponseDTO;
+import com.matt.libraryapi.infra.security.TokenService;
 import com.matt.libraryapi.repository.AdminRepository;
 import com.matt.libraryapi.repository.UserRepository;
 import com.matt.libraryapi.utils.LibraryException;
@@ -20,16 +22,23 @@ public class AuthenticationService {
   private final UserRepository userRepository;
   private final AdminRepository adminRepository;
 
+  private final TokenService tokenService;
+
   public AuthenticationService(AuthenticationManager authenticationManager,
-      UserRepository userRepository, AdminRepository adminRepository) {
+      UserRepository userRepository, AdminRepository adminRepository, TokenService tokenService) {
     this.authenticationManager = authenticationManager;
     this.userRepository = userRepository;
     this.adminRepository = adminRepository;
+    this.tokenService = tokenService;
   }
 
-  public void Login(LoginAuthenticationRequestDTO loginData) {
+  public LoginAuthenticationResponseDTO Login(LoginAuthenticationRequestDTO loginData)
+      throws LibraryException {
     var userData = new UsernamePasswordAuthenticationToken(loginData.email(), loginData.password());
     var auth = this.authenticationManager.authenticate(userData);
+
+    var token = tokenService.generateToken((User) auth.getPrincipal());
+    return new LoginAuthenticationResponseDTO(token);
   }
 
   public RegisterResponseDTO registerUser(RegisterRequestDTO request) throws LibraryException {
