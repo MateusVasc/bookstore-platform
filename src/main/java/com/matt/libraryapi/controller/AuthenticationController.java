@@ -33,7 +33,7 @@ public class AuthenticationController {
     ResponseEntity<Object> response;
 
     try {
-      response = ResponseEntity.ok(this.authenticationService.Login(loginData));
+      response = ResponseEntity.ok(this.authenticationService.login(loginData));
 
     } catch (LibraryException exception) {
       response = ResponseEntity.badRequest().body(new MessageUtil(exception.getMessage()));

@@ -32,7 +32,7 @@ public class AuthenticationService {
     this.tokenService = tokenService;
   }
 
-  public LoginAuthenticationResponseDTO Login(LoginAuthenticationRequestDTO loginData)
+  public LoginAuthenticationResponseDTO login(LoginAuthenticationRequestDTO loginData)
       throws LibraryException {
     var userData = new UsernamePasswordAuthenticationToken(loginData.email(), loginData.password());
     var auth = this.authenticationManager.authenticate(userData);
