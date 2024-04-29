@@ -1,6 +1,7 @@
 package com.matt.libraryapi.domain.entity;
 
 import com.matt.libraryapi.domain.enums.BookGender;
+import com.matt.libraryapi.domain.request.AddBookRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,4 +51,14 @@ public class Book {
 
   @Column(name = "is_rented", nullable = false)
   private boolean isRented;
+
+  public Book(AddBookRequestDTO addBookRequestDTO) {
+    this.title = addBookRequestDTO.title();
+    this.author = addBookRequestDTO.author();
+    this.synopsis = addBookRequestDTO.synopsis();
+    this.gender = addBookRequestDTO.gender();
+    this.publishingCompany = addBookRequestDTO.publishingCompany();
+    this.length = addBookRequestDTO.length();
+    this.publicationDate = addBookRequestDTO.publicationDate();
+  }
 }
