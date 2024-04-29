@@ -3,14 +3,11 @@ package com.matt.libraryapi.controller;
 import com.matt.libraryapi.domain.enums.Role;
 import com.matt.libraryapi.domain.request.LoginAuthenticationRequestDTO;
 import com.matt.libraryapi.domain.request.RegisterRequestDTO;
-import com.matt.libraryapi.repository.AdminRepository;
-import com.matt.libraryapi.repository.UserRepository;
 import com.matt.libraryapi.service.AuthenticationService;
 import com.matt.libraryapi.utils.LibraryException;
 import com.matt.libraryapi.utils.MessageUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +19,7 @@ public class AuthenticationController {
 
   private final AuthenticationService authenticationService;
 
-  public AuthenticationController(AuthenticationManager authenticationManager,
-      UserRepository userRepository, AdminRepository adminRepository,
-      AuthenticationService authenticationService) {
+  public AuthenticationController(AuthenticationService authenticationService) {
     this.authenticationService = authenticationService;
   }
 
