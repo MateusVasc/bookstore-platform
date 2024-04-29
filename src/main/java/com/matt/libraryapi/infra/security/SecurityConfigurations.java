@@ -31,7 +31,7 @@ public class SecurityConfigurations {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/book").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/api/books").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
