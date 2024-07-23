@@ -12,8 +12,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Component
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
@@ -28,7 +30,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     String username = null;
     String token = null;
 
-    // JWT Token is in the form "Bearer token". Remove Bearer word and get the token
+    // "Bearer token". Remove Bearer and get the token
     if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
       token = requestTokenHeader.substring(7);
       try {
@@ -42,12 +44,12 @@ public class SecurityFilter extends OncePerRequestFilter {
       logger.warn("JWT Token does not begin with Bearer String");
     }
 
-    // Once we get the token validate it.
+    // validate token.
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
       UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(username);
 
-      // if token is valid configure Spring Security to manually set authentication
+      // if valid configure Spring Security to manually set authentication
       if (this.jwtToken.validateToken(token, userDetails)) {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
