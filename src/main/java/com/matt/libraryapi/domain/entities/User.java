@@ -1,6 +1,7 @@
 package com.matt.libraryapi.domain.entities;
 
 import com.matt.libraryapi.domain.enums.Role;
+import com.matt.libraryapi.domain.requests.AuthRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -41,6 +42,11 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private Role role;
+
+  public User(AuthRequest request) {
+    this.email = request.email();
+    this.password = request.password();
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
