@@ -7,9 +7,12 @@ import com.matt.libraryapi.domain.responses.LoginResponse;
 import com.matt.libraryapi.domain.responses.RegisterResponse;
 import com.matt.libraryapi.infra.JwtToken;
 import com.matt.libraryapi.repository.UserRepository;
+import com.matt.libraryapi.utils.BookstoreException;
+import com.matt.libraryapi.utils.ErrorMessages;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,15 +28,15 @@ public class AuthService {
   private final JwtToken jwtToken;
 
   public LoginResponse login(AuthRequest request) {
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.email(), request.password()));
-
     User user = userRepository.findByEmail(request.email())
-        .orElseThrow(() -> new RuntimeException("Email not registered"));
+        .orElseThrow(() -> new BookstoreException(ErrorMessages.EMAIL_NOT_REGISTERED, HttpStatus.NOT_FOUND));
 
     if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-      throw new RuntimeException("Password is incorrect");
+      throw new BookstoreException(ErrorMessages.INCORRECT_PASSWORD, HttpStatus.UNAUTHORIZED);
     }
+
+    authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
     String token = jwtToken.generateToken(user);
     return new LoginResponse(user, token);
@@ -41,11 +44,11 @@ public class AuthService {
 
   public RegisterResponse register(AuthRequest request) {
     if (!isUserDataValid(request)) {
-      throw new RuntimeException("Invalid data");
+      throw new BookstoreException(ErrorMessages.INVALID_DATA, HttpStatus.BAD_REQUEST);
     }
 
     if (userRepository.findByEmail(request.email()).isPresent()) {
-      throw new RuntimeException("Email already used");
+      throw new BookstoreException(ErrorMessages.EMAIL_USED, HttpStatus.CONFLICT);
     }
 
     User newUser = new User(request);
