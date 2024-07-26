@@ -2,7 +2,6 @@ package com.matt.libraryapi.controllers;
 
 import com.matt.libraryapi.domain.requests.AuthRequest;
 import com.matt.libraryapi.domain.responses.LoginResponse;
-import com.matt.libraryapi.domain.responses.RegisterResponse;
 import com.matt.libraryapi.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,8 +24,9 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<RegisterResponse> register(@RequestBody AuthRequest request) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(this.authService.register(request));
+  public ResponseEntity<Void> register(@RequestBody AuthRequest request) {
+    this.authService.register(request);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
 }
