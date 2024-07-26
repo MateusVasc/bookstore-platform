@@ -7,12 +7,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 
 import com.matt.libraryapi.domain.entities.User;
+import com.matt.libraryapi.domain.enums.Role;
 import com.matt.libraryapi.domain.requests.AuthRequest;
+import com.matt.libraryapi.domain.responses.LoginResponse;
 import com.matt.libraryapi.infra.JwtToken;
 import com.matt.libraryapi.repository.UserRepository;
 import com.matt.libraryapi.utils.BookstoreException;
 import com.matt.libraryapi.utils.ErrorMessages;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -46,19 +49,62 @@ class AuthServiceTest {
   @Nested
   class login {
 
+    private static AuthRequest successRequest;
+    private static AuthRequest unregisteredEmailRequest;
+    private static AuthRequest unvalidPasswordRequest;
+    private static User user;
+
+    @BeforeAll
+    static void setUp() {
+      successRequest = new AuthRequest("success@gmail.com", "Succ@ss1234");
+      unregisteredEmailRequest = new AuthRequest("invalid", "Succ@ss1234");
+      unvalidPasswordRequest = new AuthRequest("success@gmail.com", "invalid");
+      user = new User(successRequest);
+      user.setId(UUID.randomUUID());
+      user.setRole(Role.USER);
+    }
+
     @Test
+    @DisplayName("Should login successfully")
     void shouldLoginSuccessfully() {
+      when(userRepository.findByEmail(successRequest.email())).thenReturn(
+          Optional.ofNullable(user));
+      when(passwordEncoder.matches(successRequest.password(), user.getPassword())).thenReturn(true);
+      when(jwtToken.generateToken(user)).thenReturn("generatedToken");
 
+      LoginResponse response = authService.login(successRequest);
+
+      assertNotNull(response);
+      assertEquals(user.getId(), response.id());
+      assertEquals("generatedToken", response.token());
     }
 
     @Test
+    @DisplayName("Should return exception due to unregistered email")
     void shouldReturnUserNotFound() {
+      when(userRepository.findByEmail(unregisteredEmailRequest.email())).thenReturn(
+          Optional.empty());
 
+      BookstoreException exception = assertThrows(BookstoreException.class,
+          () -> authService.login(unregisteredEmailRequest));
+
+      assertEquals(ErrorMessages.EMAIL_NOT_REGISTERED, exception.getMessage());
+      assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
 
     @Test
+    @DisplayName("Should return exception due to invalid password")
     void shouldReturnInvalidPassword() {
+      when(userRepository.findByEmail(unvalidPasswordRequest.email())).thenReturn(
+          Optional.ofNullable(user));
+      when(passwordEncoder.matches(unvalidPasswordRequest.password(),
+          user.getPassword())).thenReturn(false);
 
+      BookstoreException exception = assertThrows(BookstoreException.class,
+          () -> authService.login(unvalidPasswordRequest));
+
+      assertEquals(ErrorMessages.INCORRECT_PASSWORD, exception.getMessage());
+      assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
     }
   }
 

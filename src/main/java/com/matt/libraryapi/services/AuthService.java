@@ -28,7 +28,8 @@ public class AuthService {
 
   public LoginResponse login(AuthRequest request) {
     User user = userRepository.findByEmail(request.email())
-        .orElseThrow(() -> new BookstoreException(ErrorMessages.EMAIL_NOT_REGISTERED, HttpStatus.NOT_FOUND));
+        .orElseThrow(
+            () -> new BookstoreException(ErrorMessages.EMAIL_NOT_REGISTERED, HttpStatus.NOT_FOUND));
 
     if (!passwordEncoder.matches(request.password(), user.getPassword())) {
       throw new BookstoreException(ErrorMessages.INCORRECT_PASSWORD, HttpStatus.UNAUTHORIZED);
