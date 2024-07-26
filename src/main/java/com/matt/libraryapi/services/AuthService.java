@@ -4,7 +4,6 @@ import com.matt.libraryapi.domain.entities.User;
 import com.matt.libraryapi.domain.enums.Role;
 import com.matt.libraryapi.domain.requests.AuthRequest;
 import com.matt.libraryapi.domain.responses.LoginResponse;
-import com.matt.libraryapi.domain.responses.RegisterResponse;
 import com.matt.libraryapi.infra.JwtToken;
 import com.matt.libraryapi.repository.UserRepository;
 import com.matt.libraryapi.utils.BookstoreException;
@@ -42,7 +41,7 @@ public class AuthService {
     return new LoginResponse(user, token);
   }
 
-  public RegisterResponse register(AuthRequest request) {
+  public void register(AuthRequest request) {
     if (!isUserDataValid(request)) {
       throw new BookstoreException(ErrorMessages.INVALID_DATA, HttpStatus.BAD_REQUEST);
     }
@@ -56,8 +55,6 @@ public class AuthService {
     newUser.setRole(Role.USER);
 
     userRepository.save(newUser);
-
-    return new RegisterResponse(newUser);
   }
 
   private boolean isUserDataValid(AuthRequest request) {
