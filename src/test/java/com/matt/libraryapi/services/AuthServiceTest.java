@@ -14,6 +14,7 @@ import com.matt.libraryapi.utils.BookstoreException;
 import com.matt.libraryapi.utils.ErrorMessages;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,6 +79,7 @@ class AuthServiceTest {
     }
 
     @Test
+    @DisplayName("Should register successfully")
     void shouldRegisterSuccessfully() {
       when(userRepository.findByEmail(successRequest.email())).thenReturn(Optional.empty());
       when(passwordEncoder.encode(successRequest.password())).thenReturn("encodedPassword");
@@ -88,6 +90,7 @@ class AuthServiceTest {
     }
 
     @Test
+    @DisplayName("Should return exception due to invalid email")
     void shouldReturnInvalidDataBecauseOfEmail() {
       BookstoreException exception = assertThrows(BookstoreException.class,
           () -> authService.register(invalidEmailRequest));
@@ -97,6 +100,7 @@ class AuthServiceTest {
     }
 
     @Test
+    @DisplayName("Should return exception due to invalid password")
     void shouldReturnInvalidDataBecauseOfPassword() {
       BookstoreException exception = assertThrows(BookstoreException.class,
           () -> authService.register(invalidPasswordRequest));
@@ -106,6 +110,7 @@ class AuthServiceTest {
     }
 
     @Test
+    @DisplayName("Should return exception due to already used email")
     void shouldReturnEmailAlreadyUsed() {
       when(userRepository.findByEmail(usedEmailRequest.email())).thenReturn(
           Optional.of(new User()));
