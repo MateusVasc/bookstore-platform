@@ -1,16 +1,21 @@
 package com.matt.libraryapi.domain.enums;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum Role {
-  ADMIN("admin"),
-  USER("user");
 
-  private String role;
+  ADMIN("Admin"),
+  USER("User");
 
-  Role(String role) {
-    this.role = role;
-  }
+  private final String displayRole;
 
   public String getRole() {
-    return this.role;
+    return displayRole;
+  }
+
+  @Override
+  public String toString() {
+    return displayRole;
   }
 }
