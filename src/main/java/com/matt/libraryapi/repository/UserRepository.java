@@ -1,13 +1,14 @@
 package com.matt.libraryapi.repository;
 
-import com.matt.libraryapi.domain.entity.User;
+import com.matt.libraryapi.domain.entities.User;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-  User findByCpf(String cpf);
+  Optional<User> findByEmail(String email);
 
-  UserDetails findByEmail(String email);
 }
