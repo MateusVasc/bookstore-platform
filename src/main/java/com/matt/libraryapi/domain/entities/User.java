@@ -48,6 +48,12 @@ public class User implements UserDetails {
     this.password = request.password();
   }
 
+  public User(String email, String password) {
+    this.email = email;
+    this.password = password;
+    this.role = Role.USER;
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
