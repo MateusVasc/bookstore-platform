@@ -46,6 +46,7 @@ public class User implements UserDetails {
   public User(AuthRequest request) {
     this.email = request.email();
     this.password = request.password();
+    this.role = Role.USER;
   }
 
   public User(String email, String password) {

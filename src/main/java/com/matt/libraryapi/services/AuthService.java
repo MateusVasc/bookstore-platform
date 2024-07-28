@@ -53,7 +53,6 @@ public class AuthService {
 
     User newUser = new User(request);
     newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-    newUser.setRole(Role.USER);
 
     userRepository.save(newUser);
   }
