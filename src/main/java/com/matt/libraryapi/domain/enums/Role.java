@@ -8,14 +8,14 @@ public enum Role {
   ADMIN("Admin"),
   USER("User");
 
-  private final String displayRole;
+  private final String value;
 
-  public String getRole() {
-    return displayRole;
+  public String getValue() {
+    return value;
   }
 
   @Override
   public String toString() {
-    return displayRole;
+    return value;
   }
 }

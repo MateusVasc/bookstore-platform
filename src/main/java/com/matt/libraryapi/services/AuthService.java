@@ -1,7 +1,6 @@
 package com.matt.libraryapi.services;
 
 import com.matt.libraryapi.domain.entities.User;
-import com.matt.libraryapi.domain.enums.Role;
 import com.matt.libraryapi.domain.requests.AuthRequest;
 import com.matt.libraryapi.domain.responses.LoginResponse;
 import com.matt.libraryapi.infra.JwtToken;
