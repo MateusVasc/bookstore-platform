@@ -41,23 +41,23 @@ public class User implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private String role;
+  private Role role;
 
   public User(AuthRequest request) {
     this.email = request.email();
     this.password = request.password();
-    this.role = Role.USER.getValue();
+    this.role = Role.USER;
   }
 
   public User(String email, String password) {
     this.email = email;
     this.password = password;
-    this.role = Role.USER.getValue();
+    this.role = Role.USER;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singletonList(new SimpleGrantedAuthority(role));
+    return Collections.singletonList(new SimpleGrantedAuthority(role.getValue()));
   }
 
   @Override
