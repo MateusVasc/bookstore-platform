@@ -1,5 +1,8 @@
 package com.matt.libraryapi.domain.entities;
 
+import com.matt.libraryapi.domain.enums.Genre;
+import com.matt.libraryapi.domain.enums.Language;
+import com.matt.libraryapi.domain.enums.State;
 import com.matt.libraryapi.domain.requests.SaveBookRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,16 +43,16 @@ public class Book {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private String genre;
+  private Genre genre;
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private String language;
+  private Language language;
 
   @Column(nullable = false)
   private int numPages;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private byte[] cover;
 
   @Column(nullable = false)
@@ -57,7 +60,7 @@ public class Book {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private String availability;
+  private State availability;
 
   @Column(nullable = false)
   private int stockCount;
@@ -67,12 +70,12 @@ public class Book {
     this.author = request.author();
     this.publisher = request.publisher();
     this.publishedAt = request.publishedAt();
-    this.genre = request.genre().getValue();
-    this.language = request.language().getValue();
+    this.genre = request.genre();
+    this.language = request.language();
     this.numPages = request.numPages();
     this.cover = request.cover();
     this.price = request.price();
-    this.availability = request.availability().getValue();
+    this.availability = request.availability();
     this.stockCount = request.stockCount();
   }
 }
