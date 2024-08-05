@@ -1,6 +1,5 @@
 package com.matt.libraryapi.services;
 
-import com.matt.libraryapi.controllers.AdminController;
 import com.matt.libraryapi.domain.entities.Book;
 import com.matt.libraryapi.domain.entities.User;
 import com.matt.libraryapi.domain.enums.Genre;
@@ -8,6 +7,7 @@ import com.matt.libraryapi.domain.enums.Language;
 import com.matt.libraryapi.domain.enums.Role;
 import com.matt.libraryapi.domain.enums.State;
 import com.matt.libraryapi.domain.requests.SaveBookRequest;
+import com.matt.libraryapi.domain.responses.SavedBookResponse;
 import com.matt.libraryapi.repository.BookRepository;
 import com.matt.libraryapi.repository.UserRepository;
 import com.matt.libraryapi.utils.BookstoreException;
@@ -23,18 +23,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdminService {
 
-  private final AdminController adminController;
   private final BookRepository bookRepository;
   private final UserRepository userRepository;
 
-  public void saveBook(UUID adminId, SaveBookRequest request) {
+  public SavedBookResponse saveBook(UUID adminId, SaveBookRequest request) {
     Optional<User> admin = userRepository.findById(adminId);
 
     if (admin.isEmpty()) {
       throw new BookstoreException(ErrorMessages.EMAIL_NOT_REGISTERED, HttpStatus.NOT_FOUND);
     }
 
-    if (!admin.get().getRole().equals(Role.ADMIN.getValue())) {
+    if (!admin.get().getRole().equals(Role.ADMIN)) {
       throw new BookstoreException(ErrorMessages.UNAUTHORIZED_USER, HttpStatus.UNAUTHORIZED);
     }
 
@@ -44,9 +43,9 @@ public class AdminService {
 
     Book book = new Book(request);
     bookRepository.save(book);
-  }
 
-  public void deleteBook() {}
+    return new SavedBookResponse(book.getId());
+  }
 
   private boolean isBookDataValid(SaveBookRequest request) {
     return isBookTitleValid(request.title()) &&
