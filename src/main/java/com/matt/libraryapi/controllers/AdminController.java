@@ -1,6 +1,7 @@
 package com.matt.libraryapi.controllers;
 
 import com.matt.libraryapi.domain.requests.SaveBookRequest;
+import com.matt.libraryapi.domain.responses.SavedBookResponse;
 import com.matt.libraryapi.services.AdminService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,8 @@ public class AdminController {
   private final AdminService adminService;
 
   @PostMapping("/{adminId}/new-book")
-  public ResponseEntity<Void> saveBook(@PathVariable UUID adminId, @RequestBody SaveBookRequest request) {
-    this.adminService.saveBook(adminId, request);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+  public ResponseEntity<SavedBookResponse> saveBook(@PathVariable UUID adminId, @RequestBody SaveBookRequest request) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(this.adminService.saveBook(adminId, request));
   }
 
 }
