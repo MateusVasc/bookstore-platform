@@ -1,5 +1,6 @@
 package com.matt.libraryapi.infra;
 
+import com.matt.libraryapi.domain.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,8 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
-            .anyRequest().permitAll())
+            .requestMatchers("/bookstore/auth/**", "/bookstore/user/**").permitAll()
+        .requestMatchers("/bookstore/admin/**").hasAuthority(Role.ADMIN.getValue()))
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }
