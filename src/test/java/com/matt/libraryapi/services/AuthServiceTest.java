@@ -8,12 +8,6 @@ import static org.mockito.Mockito.times;
 
 import com.matt.libraryapi.domain.entities.User;
 import com.matt.libraryapi.domain.enums.Role;
-import com.matt.libraryapi.domain.requests.AuthRequest;
-import com.matt.libraryapi.domain.responses.LoginResponse;
-import com.matt.libraryapi.infra.JwtToken;
-import com.matt.libraryapi.repository.UserRepository;
-import com.matt.libraryapi.utils.BookstoreException;
-import com.matt.libraryapi.utils.ErrorMessages;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;

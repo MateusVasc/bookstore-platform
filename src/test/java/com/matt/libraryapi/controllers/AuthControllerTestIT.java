@@ -6,10 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matt.libraryapi.domain.entities.User;
-import com.matt.libraryapi.domain.requests.AuthRequest;
-import com.matt.libraryapi.domain.responses.LoginResponse;
-import com.matt.libraryapi.infra.JwtToken;
-import com.matt.libraryapi.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
